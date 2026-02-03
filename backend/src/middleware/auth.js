@@ -30,7 +30,11 @@ async function authenticate(req, res, next){
         if (error.name=='JsonWebTokenError'){
             return res.status(401).json({error: 'Invalid Token!'});
         }
-        next(error); //pass to error handler
+        if (error.name=='TokenExpiredError'){
+            return res.status(401).json({error: 'Token expired!'});
+        }
+        console.error('Authentication middleware error', error);
+        return res.status(500).json({error: 'authentication failed'});
     }
-}
+};
 module.exports= {authenticate};
