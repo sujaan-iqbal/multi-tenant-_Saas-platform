@@ -1,40 +1,47 @@
-const jwt= require('jsonwebtoken');
-const {User}= require('../models');
+// src/middleware/auth-fixed.js
+const jwt = require('../utils/jwt');
+const { User } = require('../models');
 
-async function authenticate(req, res, next){
-    try{
-        const authHeader= req.headers.authorization;
-        if (!authHeader?.startsWith('Bearer ')){
-            return  res.status(401).json({error:'No token Provided'});
-        }
-        const token= authHeader.split(' ')[1];
-        const decoded =jwt.verify(token.process.env.JWT_SECRET);
-        //fetching user form DB (not trusting the token alone)
-        const User = await User.findOne({
-            _id: decoded.userId,
-            tenantId: decoded.tenantId,
-            status: 'active'
-        }).select('-passwordHash'); //dont return password
+const authenticate = async (req, res, next) => {
+    console.log('🔐 Auth middleware running...');
+    
+    try {
+        // Check authorization header
+        const authHeader = req.headers.authorization;
+        console.log('Auth header:', authHeader ? 'Present' : 'Missing');
         
-        if (!user){
-            return res.status(401).json({error: 'user not found or inactive!'});
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            console.log('❌ No Bearer token');
+            return res.status(401).json({ error: 'No token' });
         }
 
-        req.user=  user;
-        req.tenantId= user.tenantId;
+        const token = authHeader.split(' ')[1];
+        console.log('Token length:', token.length);
+        
+        // Verify token
+        const decoded = jwt.verifyToken(token);
+        console.log('Decoded:', decoded);
+        
+        // Find user
+        const user = await User.findOne({
+            _id: decoded.userId,
+            tenantId: decoded.tenantId
+        }).select('-passwordHash');
+        
+        if (!user) {
+            console.log('❌ User not found');
+            return res.status(401).json({ error: 'User not found' });
+        }
+        
+        console.log('✅ User found:', user.email);
+        req.user = user;
+        req.tenantId = user.tenantId;
+        
         next();
-
-
-    }
-    catch(error){
-        if (error.name=='JsonWebTokenError'){
-            return res.status(401).json({error: 'Invalid Token!'});
-        }
-        if (error.name=='TokenExpiredError'){
-            return res.status(401).json({error: 'Token expired!'});
-        }
-        console.error('Authentication middleware error', error);
-        return res.status(500).json({error: 'authentication failed'});
+    } catch (error) {
+        console.log('❌ Auth error:', error.message);
+        return res.status(401).json({ error: 'Authentication failed: ' + error.message });
     }
 };
-module.exports= {authenticate};
+
+module.exports = { authenticate };

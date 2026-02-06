@@ -25,45 +25,85 @@
 
 // test-middleware.js
 // Test the authentication flow
-require('dotenv').config();
-const jwt = require('./src/utils/jwt');
+// test-jwt-fixed.js
+// test-all.js
+// test-route-setup.js
 
-// Mock a user ID and tenant ID from your seed data
-const testUserId = "6981f2d7fde114ebe7330ef8"; // Use a real user ID from your seed
-const testTenantId = "6981f2d7fde114ebe7330ef8"; // Use Acme tenant ID
 
-console.log('Testing JWT generation and verification...\n');
 
-try {
-    // 1. Generate a test token
-    const token = jwt.generateToken({
-        userId: testUserId,
-        tenantId: testTenantId,
-        role: 'owner'
+
+// const express = require('express');
+// const app = express();
+
+// // Test if middleware works
+// const testAuth = (req, res, next) => {
+//     console.log('Test middleware called');
+//     req.user = { id: 'test-user', tenantId: 'test-tenant' };
+//     next();
+// };
+
+// // Test route
+// app.get('/api/auth/test-me', testAuth, (req, res) => {
+//     res.json({ 
+//         message: 'Test route works',
+//         user: req.user 
+//     });
+// });
+
+// app.listen(3001, () => {
+//     console.log('Test server on http://localhost:3001');
+//     console.log('Test: curl http://localhost:3001/api/auth/test-me');
+// });
+
+
+
+// get-token-simple.js - No dependencies
+const https = require('https');
+
+const data = JSON.stringify({
+    companyName: 'Simple Test',
+    email: `simple${Date.now()}@test.com`,
+    password: 'Simple123!'
+});
+
+const options = {
+    hostname: 'localhost',
+    port: 3000,
+    path: '/api/auth/register',
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': data.length
+    }
+};
+
+const req = https.request(options, (res) => {
+    let responseData = '';
+    
+    res.on('data', (chunk) => {
+        responseData += chunk;
     });
     
-    console.log('✅ Generated token:', token.substring(0, 50) + '...');
-    
-    // 2. Verify the token
-    const decoded = jwt.verifyToken(token);
-    console.log('✅ Token verified successfully');
-    console.log('Decoded payload:', decoded);
-    
-    // 3. Test expiration (optional)
-    const expiredToken = jwt.generateToken(
-        { userId: testUserId, tenantId: testTenantId },
-        '1ms' // 1 millisecond expiration
-    );
-    
-    setTimeout(() => {
+    res.on('end', () => {
         try {
-            jwt.verifyToken(expiredToken);
-            console.log('❌ Token should have expired but didn\'t');
-        } catch (err) {
-            console.log('✅ Expired token correctly rejected:', err.message);
+            const result = JSON.parse(responseData);
+            console.log('\n=== FULL RESPONSE ===');
+            console.log(JSON.stringify(result, null, 2));
+            
+            if (result.token) {
+                console.log('\n=== TOKEN (FULL) ===');
+                console.log(result.token);
+                console.log('\nToken length:', result.token.length);
+            }
+        } catch (e) {
+            console.log('Raw response:', responseData);
         }
-    }, 10);
-    
-} catch (error) {
-    console.error('❌ Test failed:', error.message);
-}
+    });
+});
+
+req.on('error', (error) => {
+    console.error('Request failed:', error.message);
+});
+
+req.write(data);
+req.end();
