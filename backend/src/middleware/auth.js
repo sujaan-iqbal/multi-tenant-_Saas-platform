@@ -1,4 +1,4 @@
-// src/middleware/auth-fixed.js
+// src/middleware/auth.js
 const jwt = require('../utils/jwt');
 const { User } = require('../models');
 
