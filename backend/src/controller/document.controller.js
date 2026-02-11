@@ -185,6 +185,24 @@ const batchAnalyze = async (req, res) => {
     }
 };
 
+const analyzeDocument = async (req, res) => {
+    try {
+        const service = new DocumentService(req.tenantId, req.user._id);
+        await service.analyzeDocument(req.params.id);
+        
+        const document = await service.findById(req.params.id);
+        
+        res.status(200).json({
+            message: 'Document analyzed',
+            aiMetadata: document.aiMetadata
+        });
+    } catch (error) {
+        console.error('Analyze error:', error);
+        res.status(500).json({ error: 'Analysis failed' });
+    }
+};
+
+
 const getAICacheStats = async (req, res) => {
     try {
         const service = new DocumentService(req.tenantId, req.user._id);
@@ -218,5 +236,7 @@ module.exports = {
     smartSearch,
     batchAnalyze,
     getAICacheStats,
-    clearAICache
+    clearAICache,
+    analyzeDocument
+    
 };

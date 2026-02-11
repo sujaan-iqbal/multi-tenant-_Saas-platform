@@ -1,6 +1,12 @@
 // src/app.js
 const express = require('express');
 const app = express();
+const cors = require('cors');
+
+app.use(cors({
+  origin: 'http://localhost:3001',
+  credentials: true
+}));
 
 app.use(express.json());
 require('dotenv').config();
@@ -10,6 +16,7 @@ app.use((req, res, next) => {
     console.log(` ${req.method} ${req.url}`);
     next();
 });
+
 
 app.use('/health', require('./routes/health.route'));
 app.use('/api/auth', require('./routes/auth.route'));

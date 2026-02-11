@@ -1,8 +1,9 @@
 // frontend/app/login/page.jsx
 'use client';
 
-import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContexts';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -16,11 +17,13 @@ export default function LoginPage() {
   const { login, isAuthenticated } = useAuth();
   const router = useRouter();
 
-  // Redirect if already authenticated
-  if (isAuthenticated) {
+  // Redirect if already authenticated using useEffect to avoid issues with server-side rendering
+  useEffect(()=>{
+    if (isAuthenticated) {
     router.push('/documents');
   }
-
+  })
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');

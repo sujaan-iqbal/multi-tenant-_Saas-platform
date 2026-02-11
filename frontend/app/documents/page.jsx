@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContexts';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
@@ -125,30 +125,30 @@ export default function DocumentsPage() {
       {/* Create Form */}
       {showCreateForm && (
         <div className="bg-white p-6 rounded-lg shadow-md border">
-          <h2 className="text-xl font-semibold mb-4">Create New Document</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Create New Document</h2>
           <form onSubmit={handleCreateDocument} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-900 mb-1">
                 Title *
               </label>
               <input
                 type="text"
                 value={newDocument.title}
                 onChange={(e) => setNewDocument({...newDocument, title: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 placeholder="Enter document title"
                 required
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-900 mb-1">
                 Content
               </label>
               <textarea
                 value={newDocument.content}
                 onChange={(e) => setNewDocument({...newDocument, content: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 rows="4"
                 placeholder="Start writing..."
               />

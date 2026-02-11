@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContexts';
 import { useRouter, useParams } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link';
@@ -82,7 +82,7 @@ export default function DocumentDetailPage() {
   if (!document) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-bold text-gray-900">Document Not Found</h2>
+        <h2 className="text-2xl font-bold text-black-900">Document Not Found</h2>
         <Link href="/documents" className="text-blue-600 hover:text-blue-800 mt-4 inline-block">
           ← Back to Documents
         </Link>
@@ -128,7 +128,7 @@ export default function DocumentDetailPage() {
         {editing ? (
           <div className="p-6">
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-black-700 mb-1">
                 Title
               </label>
               <input
@@ -139,7 +139,7 @@ export default function DocumentDetailPage() {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-black-700 mb-1">
                 Content
               </label>
               <textarea

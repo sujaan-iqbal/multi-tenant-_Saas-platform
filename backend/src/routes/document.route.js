@@ -13,7 +13,7 @@ router.get('/', documentController.getDocuments);
 router.get('/:id', documentController.getDocument);
 router.put('/:id', documentController.updateDocument);
 router.delete('/:id', documentController.archiveDocument); // Soft delete
-
+router.post('/:id/analyze', documentController.analyzeDocument);
 router.post('/batch/analyze', documentController.batchAnalyze);
 router.get('/ai/cache/stats', documentController.getAICacheStats);
 router.post('/ai/cache/clear', documentController.clearAICache);
