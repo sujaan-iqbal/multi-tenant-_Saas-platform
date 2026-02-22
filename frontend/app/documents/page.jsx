@@ -13,7 +13,7 @@ export default function DocumentsPage() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newDocument, setNewDocument] = useState({ title: '', content: '', isFolder: false });
   
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated, token } = useAuth();
   const router = useRouter();
 
   // Redirect if not authenticated
@@ -24,10 +24,10 @@ export default function DocumentsPage() {
   }, [isAuthenticated, router]);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && token) {
       fetchDocuments();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, token]);
 
   const fetchDocuments = async () => {
     try {

@@ -187,6 +187,95 @@ class DocumentService {
         this.aiService.clearCache();
         return { message: 'AI cache cleared' };
     }
-}
 
+
+   /*=========================service factory==========================*/
+
+       async toggleStar(id) {
+        const doc = await this.findById(id);
+        if (!doc) return null;
+        
+        return await Document.findOneAndUpdate(
+            { _id: id, tenantId: this.tenantId },
+            { isStarred: !doc.isStarred },
+            { new: true }
+        );
+    }
+
+    // Get starred documents
+    async getStarred() {
+        return await Document.find({
+            tenantId: this.tenantId,
+            isStarred: true,
+            isArchived: false
+        }).sort({ updatedAt: -1 });
+    }
+
+    // Get recent documents by days
+    async getRecent(days = 7) {
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+        
+        return await Document.find({
+            tenantId: this.tenantId,
+            isArchived: false,
+            $or: [
+                { updatedAt: { $gte: cutoffDate } },
+                { lastOpened: { $gte: cutoffDate } }
+            ]
+        }).sort({ updatedAt: -1 });
+    }
+
+    // Soft delete to trash
+    async moveToTrash(id) {
+        return await Document.findOneAndUpdate(
+            { _id: id, tenantId: this.tenantId },
+            { 
+                isArchived: true,
+                deletedAt: new Date()
+            },
+            { new: true }
+        );
+    }
+
+    // Restore from trash
+    async restoreFromTrash(id) {
+        return await Document.findOneAndUpdate(
+            { _id: id, tenantId: this.tenantId, isArchived: true },
+            { 
+                isArchived: false,
+                deletedAt: null
+            },
+            { new: true }
+        );
+    }
+
+    // Get trash items
+    async getTrash() {
+        return await Document.find({
+            tenantId: this.tenantId,
+            isArchived: true
+        }).sort({ deletedAt: -1 });
+    }
+
+    // Permanently delete
+    async permanentlyDelete(id) {
+        return await Document.findOneAndDelete({
+            _id: id,
+            tenantId: this.tenantId,
+            isArchived: true
+        });
+    }
+
+    // Update last opened
+    async recordOpen(id) {
+        return await Document.findOneAndUpdate(
+            { _id: id, tenantId: this.tenantId },
+            { lastOpened: new Date() },
+            { new: true }
+        );
+    }
+
+
+}
 module.exports = DocumentService;

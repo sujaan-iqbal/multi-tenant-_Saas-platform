@@ -18,4 +18,21 @@ router.post('/batch/analyze', documentController.batchAnalyze);
 router.get('/ai/cache/stats', documentController.getAICacheStats);
 router.post('/ai/cache/clear', documentController.clearAICache);
 
+// Starred routes
+router.post('/:id/star', documentController.toggleStar);
+router.get('/starred/all', documentController.getStarred);
+
+// Recent routes
+router.get('/recent', documentController.getRecent);
+
+// Trash routes
+router.post('/:id/trash', documentController.moveToTrash);
+router.get('/trash/all', documentController.getTrash);
+router.post('/:id/restore', documentController.restoreFromTrash);
+router.delete('/:id/permanent', documentController.permanentlyDelete);
+
+// Record open
+router.post('/:id/open', documentController.recordOpen);
+
+
 module.exports = router;

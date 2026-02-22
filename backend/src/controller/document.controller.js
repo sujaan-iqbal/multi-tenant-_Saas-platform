@@ -226,6 +226,147 @@ const clearAICache = async (req, res) => {
         res.status(500).json({ error: 'Failed to clear cache' });
     }
 };
+// Toggle star
+const toggleStar = async (req, res) => {
+    try {
+        const service = new DocumentService(req.tenantId, req.user._id);
+        const document = await service.toggleStar(req.params.id);
+        
+        if (!document) {
+            return res.status(404).json({ error: 'Document not found' });
+        }
+        
+        res.status(200).json({
+            message: document.isStarred ? 'Document starred' : 'Document unstarred',
+            document
+        });
+    } catch (error) {
+        console.error('Toggle star error:', error);
+        res.status(500).json({ error: 'Failed to toggle star' });
+    }
+};
+
+// Get starred
+const getStarred = async (req, res) => {
+    try {
+        const service = new DocumentService(req.tenantId, req.user._id);
+        const documents = await service.getStarred();
+        
+        res.status(200).json({
+            count: documents.length,
+            documents
+        });
+    } catch (error) {
+        console.error('Get starred error:', error);
+        res.status(500).json({ error: 'Failed to get starred documents' });
+    }
+};
+
+// Get recent by days
+const getRecent = async (req, res) => {
+    try {
+        const { days = 7 } = req.query;
+        const service = new DocumentService(req.tenantId, req.user._id);
+        const documents = await service.getRecent(parseInt(days));
+        
+        res.status(200).json({
+            days: parseInt(days),
+            count: documents.length,
+            documents
+        });
+    } catch (error) {
+        console.error('Get recent error:', error);
+        res.status(500).json({ error: 'Failed to get recent documents' });
+    }
+};
+
+// Move to trash
+const moveToTrash = async (req, res) => {
+    try {
+        const service = new DocumentService(req.tenantId, req.user._id);
+        const document = await service.moveToTrash(req.params.id);
+        
+        if (!document) {
+            return res.status(404).json({ error: 'Document not found' });
+        }
+        
+        res.status(200).json({
+            message: 'Document moved to trash',
+            document
+        });
+    } catch (error) {
+        console.error('Move to trash error:', error);
+        res.status(500).json({ error: 'Failed to move document to trash' });
+    }
+};
+
+// Get trash
+const getTrash = async (req, res) => {
+    try {
+        const service = new DocumentService(req.tenantId, req.user._id);
+        const documents = await service.getTrash();
+        
+        res.status(200).json({
+            count: documents.length,
+            documents
+        });
+    } catch (error) {
+        console.error('Get trash error:', error);
+        res.status(500).json({ error: 'Failed to get trash' });
+    }
+};
+
+// Restore from trash
+const restoreFromTrash = async (req, res) => {
+    try {
+        const service = new DocumentService(req.tenantId, req.user._id);
+        const document = await service.restoreFromTrash(req.params.id);
+        
+        if (!document) {
+            return res.status(404).json({ error: 'Document not found in trash' });
+        }
+        
+        res.status(200).json({
+            message: 'Document restored',
+            document
+        });
+    } catch (error) {
+        console.error('Restore error:', error);
+        res.status(500).json({ error: 'Failed to restore document' });
+    }
+};
+
+// Permanently delete
+const permanentlyDelete = async (req, res) => {
+    try {
+        const service = new DocumentService(req.tenantId, req.user._id);
+        const document = await service.permanentlyDelete(req.params.id);
+        
+        if (!document) {
+            return res.status(404).json({ error: 'Document not found in trash' });
+        }
+        
+        res.status(200).json({
+            message: 'Document permanently deleted'
+        });
+    } catch (error) {
+        console.error('Permanent delete error:', error);
+        res.status(500).json({ error: 'Failed to delete document' });
+    }
+};
+
+// Record document open
+const recordOpen = async (req, res) => {
+    try {
+        const service = new DocumentService(req.tenantId, req.user._id);
+        await service.recordOpen(req.params.id);
+        res.status(200).json({ message: 'Open recorded' });
+    } catch (error) {
+        console.error('Record open error:', error);
+        res.status(500).json({ error: 'Failed to record open' });
+    }
+};
+
 
 module.exports = {
     createDocument,
@@ -237,6 +378,13 @@ module.exports = {
     batchAnalyze,
     getAICacheStats,
     clearAICache,
-    analyzeDocument
-    
+    analyzeDocument,
+    toggleStar,
+    getStarred,
+    getRecent,
+    moveToTrash,
+    getTrash,
+    restoreFromTrash,
+    permanentlyDelete,
+    recordOpen
 };

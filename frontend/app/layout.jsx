@@ -1,7 +1,10 @@
 // frontend/app/layout.jsx
 import { Inter } from 'next/font/google';
 import { AuthProvider } from '@/contexts/AuthContexts';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 import './globals.css';
+import Sidebar from '@/components/Sidebar';
+
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -12,26 +15,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <AuthProvider>
-          <div className="min-h-screen bg-gray-50">
-            <nav className="bg-white shadow-sm border-b">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between h-16 items-center">
-                  <div className="flex items-center">
-                    <h1 className="text-xl font-bold text-gray-800">
-                      📄 SaaS Docs
-                    </h1>
-                  </div>
-                </div>
-              </div>
-            </nav>
-            <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-              {children}
-            </main>
-          </div>
-        </AuthProvider>
+    <html>
+      <body>
+        <ThemeProvider>
+          <AuthProvider>
+            <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-900 transition-colors">
+              <Sidebar />
+              <main className="flex-1 overflow-y-auto p-6 dark:text-gray-100">
+                {children}
+              </main>
+            </div>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
