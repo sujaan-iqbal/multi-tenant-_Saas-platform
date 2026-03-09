@@ -116,7 +116,7 @@ export default function Sidebar() {
       {/* Mobile overlay */}
       {!isCollapsed && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
           onClick={() => setIsCollapsed(true)}
         />
       )}
@@ -124,39 +124,41 @@ export default function Sidebar() {
       {/* Sidebar */}
       <aside className={`
         fixed md:static inset-y-0 left-0 z-40
-        flex flex-col h-screen bg-white border-r border-gray-200
+        flex flex-col h-screen
+        bg-[rgb(var(--card))] 
+        border-r border-[rgb(var(--border))]
         transition-transform duration-300 ease-in-out
         ${isCollapsed ? '-translate-x-full' : 'translate-x-0'}
         md:translate-x-0 w-64
       `}>
         
         {/* Header - Logo & Collapse */}
-        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
+        <div className="flex items-center justify-between h-16 px-4 border-b border-[rgb(var(--border))]">
           <Link href="/documents" className="flex items-center space-x-2">
-            <DescriptionIcon className="w-6 h-6 text-blue-600" />
-            <span className="text-lg font-bold text-gray-800">SaaS Docs</span>
+            <DescriptionIcon className="w-6 h-6 text-[rgb(var(--primary))]" />
+            <span className="text-lg font-bold text-[rgb(var(--text-primary))]">SaaS Docs</span>
           </Link>
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-1 rounded-md hover:bg-gray-100 md:hidden"
+            className="p-1 rounded-md hover:bg-[rgb(var(--surface))] md:hidden"
           >
-            <CloseIcon className="w-5 h-5 text-gray-500" />
+            <CloseIcon className="w-5 h-5 text-[rgb(var(--text-secondary))]" />
           </button>
         </div>
 
         {/* User Profile */}
         {user && (
-          <div className="flex items-center px-4 py-3 border-b border-gray-200">
-            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-              <span className="text-sm font-medium text-blue-700">
+          <div className="flex items-center px-4 py-3 border-b border-[rgb(var(--border))]">
+            <div className="w-8 h-8 bg-[rgb(var(--primary)_/_0.1)] rounded-full flex items-center justify-center">
+              <span className="text-sm font-medium text-[rgb(var(--primary))]">
                 {getUserInitials()}
               </span>
             </div>
             <div className="ml-3 flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-700 truncate">
+              <p className="text-sm font-medium text-[rgb(var(--text-primary))] truncate">
                 {user.email?.split('@')[0] || 'User'}
               </p>
-              <p className="text-xs text-gray-500 capitalize">
+              <p className="text-xs text-[rgb(var(--text-secondary))] capitalize">
                 {user.role || 'Member'}
               </p>
             </div>
@@ -166,13 +168,13 @@ export default function Sidebar() {
         {/* Search Bar */}
         <div className="px-4 py-3">
           <div className="relative">
-            <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[rgb(var(--text-tertiary))] w-4 h-4" />
             <input
               type="text"
               placeholder="Search documents..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-9 pr-4 py-2 text-sm bg-[rgb(var(--surface))] border border-[rgb(var(--border))] rounded-md focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary)_/_0.5)] text-[rgb(var(--text-primary))] placeholder:text-[rgb(var(--text-tertiary))]"
             />
           </div>
         </div>
@@ -181,7 +183,7 @@ export default function Sidebar() {
         <div className="px-4 mb-4">
           <button
             onClick={handleCreateNew}
-            className="w-full flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
+            className="w-full flex items-center justify-center px-4 py-2 bg-[rgb(var(--primary))] text-white text-sm font-medium rounded-md hover:bg-[rgb(var(--primary-hover))] transition-colors"
           >
             <AddIcon className="w-4 h-4 mr-2" />
             New Document
@@ -204,8 +206,8 @@ export default function Sidebar() {
                         className={`
                           flex items-center px-3 py-2 text-sm rounded-md transition-colors
                           ${pathname === '/documents/recent' 
-                            ? 'bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300' 
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                            ? 'bg-[rgb(var(--primary)_/_0.1)] text-[rgb(var(--primary))]' 
+                            : 'text-[rgb(var(--text-secondary))] hover:bg-[rgb(var(--surface))]'
                           }
                         `}
                       >
@@ -216,7 +218,7 @@ export default function Sidebar() {
                       {/* Days slider - only show on recent page */}
                       {pathname === '/documents/recent' && (
                         <div className="px-3 py-2">
-                          <div className="flex justify-between text-xs text-gray-500 mb-1">
+                          <div className="flex justify-between text-xs text-[rgb(var(--text-tertiary))] mb-1">
                             <span>1d</span>
                             <span>3d</span>
                             <span>7d</span>
@@ -229,9 +231,9 @@ export default function Sidebar() {
                             max="30"
                             value={recentDays}
                             onChange={(e) => setRecentDays(e.target.value)}
-                            className="w-full"
+                            className="w-full accent-[rgb(var(--primary))]"
                           />
-                          <p className="text-xs text-gray-500 mt-1">
+                          <p className="text-xs text-[rgb(var(--text-tertiary))] mt-1">
                             Last {recentDays} days
                           </p>
                         </div>
@@ -247,8 +249,8 @@ export default function Sidebar() {
                     className={`
                       flex items-center px-3 py-2 text-sm rounded-md transition-colors
                       ${pathname === item.path 
-                        ? 'bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300' 
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                        ? 'bg-[rgb(var(--primary)_/_0.1)] text-[rgb(var(--primary))]' 
+                        : 'text-[rgb(var(--text-secondary))] hover:bg-[rgb(var(--surface))]'
                       }
                     `}
                   >
@@ -262,7 +264,7 @@ export default function Sidebar() {
           {/* Folders Section */}
           {folders.length > 0 && (
             <div className="mb-6">
-              <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+              <h3 className="px-3 text-xs font-semibold text-[rgb(var(--text-tertiary))] uppercase tracking-wider mb-2">
                 Folders ({folders.length})
               </h3>
               <div className="space-y-1">
@@ -270,11 +272,11 @@ export default function Sidebar() {
                   <Link
                     key={folder._id}
                     href={`/folders/${folder._id}`}
-                    className="flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100"
+                    className="flex items-center px-3 py-2 text-sm text-[rgb(var(--text-secondary))] rounded-md hover:bg-[rgb(var(--surface))]"
                   >
-                    <FolderIcon className="w-4 h-4 mr-3 text-yellow-600" />
+                    <FolderIcon className="w-4 h-4 mr-3 text-[rgb(var(--primary))]" />
                     <span className="flex-1 truncate">{folder.title}</span>
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-[rgb(var(--text-tertiary))]">
                       {folder.documentCount || 0}
                     </span>
                   </Link>
@@ -286,7 +288,7 @@ export default function Sidebar() {
           {/* Documents Section */}
           {filteredDocs.length > 0 && (
             <div className="mb-6">
-              <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+              <h3 className="px-3 text-xs font-semibold text-[rgb(var(--text-tertiary))] uppercase tracking-wider mb-2">
                 Documents ({filteredDocs.length})
               </h3>
               <div className="space-y-1">
@@ -297,15 +299,15 @@ export default function Sidebar() {
                     className={`
                       flex items-center px-3 py-2 text-sm rounded-md group
                       ${pathname === `/documents/${doc._id}`
-                        ? 'bg-blue-50 text-blue-700'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        ? 'bg-[rgb(var(--primary)_/_0.1)] text-[rgb(var(--primary))]'
+                        : 'text-[rgb(var(--text-secondary))] hover:bg-[rgb(var(--surface))]'
                       }
                     `}
                   >
-                    <DescriptionIcon className="w-4 h-4 mr-3 text-gray-400" />
+                    <DescriptionIcon className="w-4 h-4 mr-3 text-[rgb(var(--text-tertiary))]" />
                     <span className="flex-1 truncate">{doc.title}</span>
                     {doc.aiMetadata?.tags?.length > 0 && (
-                      <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity text-[rgb(var(--primary))]">
                         🤖
                       </span>
                     )}
@@ -314,7 +316,7 @@ export default function Sidebar() {
                 {filteredDocs.length > 8 && (
                   <Link
                     href="/documents"
-                    className="block px-3 py-2 text-xs text-blue-600 hover:text-blue-800"
+                    className="block px-3 py-2 text-xs text-[rgb(var(--primary))] hover:text-[rgb(var(--primary-hover))]"
                   >
                     View all {filteredDocs.length} documents →
                   </Link>
@@ -326,18 +328,18 @@ export default function Sidebar() {
           {/* Loading State */}
           {loading && (
             <div className="flex justify-center py-4">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[rgb(var(--primary))]"></div>
             </div>
           )}
 
           {/* Empty State */}
           {!loading && filteredDocs.length === 0 && folders.length === 0 && (
             <div className="text-center py-8 px-3">
-              <DescriptionIcon className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-              <p className="text-sm text-gray-500">No documents yet</p>
+              <DescriptionIcon className="w-8 h-8 text-[rgb(var(--text-tertiary))] mx-auto mb-2" />
+              <p className="text-sm text-[rgb(var(--text-secondary))]">No documents yet</p>
               <button
                 onClick={handleCreateNew}
-                className="mt-3 text-xs text-blue-600 hover:text-blue-800"
+                className="mt-3 text-xs text-[rgb(var(--primary))] hover:text-[rgb(var(--primary-hover))]"
               >
                 Create your first document →
               </button>
@@ -346,7 +348,7 @@ export default function Sidebar() {
         </div>
 
         {/* Bottom Section */}
-        <div className="p-3 border-t border-gray-200">
+        <div className="p-3 border-t border-[rgb(var(--border))]">
           <div className="space-y-1">
             {bottomItems.map((item) => {
               const Icon = item.icon;
@@ -358,8 +360,8 @@ export default function Sidebar() {
                   className={`
                     flex items-center px-3 py-2 text-sm rounded-md
                     ${isActive 
-                      ? 'bg-blue-50 text-blue-700' 
-                      : 'text-gray-600 hover:bg-gray-100'
+                      ? 'bg-[rgb(var(--primary)_/_0.1)] text-[rgb(var(--primary))]' 
+                      : 'text-[rgb(var(--text-secondary))] hover:bg-[rgb(var(--surface))]'
                     }
                   `}
                 >
@@ -372,7 +374,7 @@ export default function Sidebar() {
             {/* Logout Button */}
             <button
               onClick={handleLogout}
-              className="w-full flex items-center px-3 py-2 text-sm text-red-600 rounded-md hover:bg-red-50"
+              className="w-full flex items-center px-3 py-2 text-sm text-red-600 rounded-md hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
             >
               <LogoutIcon className="w-4 h-4 mr-3" />
               <span>Logout</span>

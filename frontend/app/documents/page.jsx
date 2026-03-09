@@ -84,31 +84,31 @@ export default function DocumentsPage() {
   if (!isAuthenticated || loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[rgb(var(--primary))]"></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-[rgb(var(--text-primary))]">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Documents</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-[rgb(var(--text-primary))]">Documents</h1>
+          <p className="text-[rgb(var(--text-secondary))] mt-1">
             Welcome, {user?.email} • {documents.length} documents
           </p>
         </div>
         <div className="flex space-x-3">
           <button
             onClick={() => setShowCreateForm(!showCreateForm)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 bg-[rgb(var(--primary))] text-white rounded-md hover:bg-[rgb(var(--primary-hover))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))] transition-colors"
           >
             + New Document
           </button>
           <button
             onClick={handleLogout}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+            className="px-4 py-2 bg-[rgb(var(--surface))] text-[rgb(var(--text-secondary))] rounded-md hover:bg-[rgb(var(--border))] transition-colors"
           >
             Logout
           </button>
@@ -117,38 +117,38 @@ export default function DocumentsPage() {
 
       {/* Error Message */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+        <div className="bg-[rgb(var(--danger)_/_0.1)] border border-[rgb(var(--danger))] text-[rgb(var(--danger))] px-4 py-3 rounded-md">
           {error}
         </div>
       )}
 
       {/* Create Form */}
       {showCreateForm && (
-        <div className="bg-white p-6 rounded-lg shadow-md border">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Create New Document</h2>
+        <div className="bg-[rgb(var(--card))] border border-[rgb(var(--border))] rounded-lg p-6 shadow-md">
+          <h2 className="text-xl font-semibold text-[rgb(var(--text-primary))] mb-4">Create New Document</h2>
           <form onSubmit={handleCreateDocument} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-1">
+              <label className="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-1">
                 Title *
               </label>
               <input
                 type="text"
                 value={newDocument.title}
                 onChange={(e) => setNewDocument({...newDocument, title: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                className="w-full px-3 py-2 bg-[rgb(var(--surface))] border border-[rgb(var(--border))] rounded-md focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary)_/_0.5)] text-[rgb(var(--text-primary))] placeholder:text-[rgb(var(--text-tertiary))]"
                 placeholder="Enter document title"
                 required
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-1">
+              <label className="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-1">
                 Content
               </label>
               <textarea
                 value={newDocument.content}
                 onChange={(e) => setNewDocument({...newDocument, content: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                className="w-full px-3 py-2 bg-[rgb(var(--surface))] border border-[rgb(var(--border))] rounded-md focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary)_/_0.5)] text-[rgb(var(--text-primary))] placeholder:text-[rgb(var(--text-tertiary))]"
                 rows="4"
                 placeholder="Start writing..."
               />
@@ -160,9 +160,9 @@ export default function DocumentsPage() {
                 id="isFolder"
                 checked={newDocument.isFolder}
                 onChange={(e) => setNewDocument({...newDocument, isFolder: e.target.checked})}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                className="h-4 w-4 text-[rgb(var(--primary))] focus:ring-[rgb(var(--primary))] border-[rgb(var(--border))] rounded"
               />
-              <label htmlFor="isFolder" className="ml-2 text-sm text-gray-700">
+              <label htmlFor="isFolder" className="ml-2 text-sm text-[rgb(var(--text-secondary))]">
                 This is a folder (no content)
               </label>
             </div>
@@ -171,13 +171,13 @@ export default function DocumentsPage() {
               <button
                 type="button"
                 onClick={() => setShowCreateForm(false)}
-                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                className="px-4 py-2 text-[rgb(var(--text-secondary))] bg-[rgb(var(--surface))] rounded-md hover:bg-[rgb(var(--border))] transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                className="px-4 py-2 bg-[rgb(var(--primary))] text-white rounded-md hover:bg-[rgb(var(--primary-hover))] transition-colors"
               >
                 Create Document
               </button>
@@ -187,41 +187,41 @@ export default function DocumentsPage() {
       )}
 
       {/* Documents List */}
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
+      <div className="bg-[rgb(var(--card))] border border-[rgb(var(--border))] shadow overflow-hidden sm:rounded-md">
         {documents.length === 0 ? (
           <div className="text-center py-12">
-            <div className="text-gray-400 text-6xl mb-4">📄</div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No documents yet</h3>
-            <p className="text-gray-500">Create your first document to get started</p>
+            <div className="text-[rgb(var(--text-tertiary))] text-6xl mb-4">📄</div>
+            <h3 className="text-lg font-medium text-[rgb(var(--text-primary))] mb-2">No documents yet</h3>
+            <p className="text-[rgb(var(--text-secondary))]">Create your first document to get started</p>
             <button
               onClick={() => setShowCreateForm(true)}
-              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              className="mt-4 px-4 py-2 bg-[rgb(var(--primary))] text-white rounded-md hover:bg-[rgb(var(--primary-hover))] transition-colors"
             >
               Create Document
             </button>
           </div>
         ) : (
-          <ul className="divide-y divide-gray-200">
+          <ul className="divide-y divide-[rgb(var(--border))]">
             {documents.map((doc) => (
-              <li key={doc._id} className="px-6 py-4 hover:bg-gray-50">
+              <li key={doc._id} className="px-6 py-4 hover:bg-[rgb(var(--surface))] transition-colors">
                 <div className="flex items-center justify-between">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center">
                       {doc.isFolder ? (
-                        <span className="text-yellow-500 mr-3">📁</span>
+                        <span className="text-[rgb(var(--warning))] mr-3">📁</span>
                       ) : (
-                        <span className="text-blue-500 mr-3">📄</span>
+                        <span className="text-[rgb(var(--primary))] mr-3">📄</span>
                       )}
                       <div>
-                        <h3 className="text-lg font-medium text-gray-900 truncate">
+                        <h3 className="text-lg font-medium text-[rgb(var(--text-primary))] truncate">
                           {doc.title}
                         </h3>
                         {doc.aiMetadata?.summary && (
-                          <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                          <p className="text-sm text-[rgb(var(--text-secondary))] mt-1 line-clamp-2">
                             {doc.aiMetadata.summary}
                           </p>
                         )}
-                        <div className="flex items-center mt-2 space-x-4 text-xs text-gray-500">
+                        <div className="flex items-center mt-2 space-x-4 text-xs text-[rgb(var(--text-tertiary))]">
                           <span>Created: {new Date(doc.createdAt).toLocaleDateString()}</span>
                           {doc.aiMetadata?.tags && doc.aiMetadata.tags.length > 0 && (
                             <div className="flex items-center">
@@ -229,7 +229,7 @@ export default function DocumentsPage() {
                               {doc.aiMetadata.tags.map((tag, idx) => (
                                 <span 
                                   key={idx} 
-                                  className="bg-gray-100 text-gray-800 px-2 py-1 rounded mr-1"
+                                  className="bg-[rgb(var(--surface))] text-[rgb(var(--text-secondary))] px-2 py-1 rounded mr-1"
                                 >
                                   {tag}
                                 </span>
@@ -243,13 +243,13 @@ export default function DocumentsPage() {
                   <div className="flex space-x-2">
                     <button
                       onClick={() => router.push(`/documents/${doc._id}`)}
-                      className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                      className="px-3 py-1 text-sm bg-[rgb(var(--primary)_/_0.1)] text-[rgb(var(--primary))] rounded hover:bg-[rgb(var(--primary)_/_0.2)] transition-colors"
                     >
                       View
                     </button>
                     <button
                       onClick={() => handleDelete(doc._id)}
-                      className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200"
+                      className="px-3 py-1 text-sm bg-[rgb(var(--danger)_/_0.1)] text-[rgb(var(--danger))] rounded hover:bg-[rgb(var(--danger)_/_0.2)] transition-colors"
                     >
                       Delete
                     </button>
@@ -262,16 +262,16 @@ export default function DocumentsPage() {
       </div>
 
       {/* AI Features Note */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div className="bg-[rgb(var(--primary)_/_0.1)] border border-[rgb(var(--primary)_/_0.3)] rounded-lg p-4">
         <div className="flex items-start">
           <div className="flex-shrink-0">
-            <span className="text-blue-500 text-xl">🤖</span>
+            <span className="text-[rgb(var(--primary))] text-xl">🤖</span>
           </div>
           <div className="ml-3">
-            <h3 className="text-sm font-medium text-blue-800">AI-Powered Features</h3>
-            <div className="mt-2 text-sm text-blue-700">
+            <h3 className="text-sm font-medium text-[rgb(var(--primary))]">AI-Powered Features</h3>
+            <div className="mt-2 text-sm text-[rgb(var(--text-secondary))]">
               <p>Your documents are automatically analyzed by AI to:</p>
-              <ul className="list-disc pl-5 mt-1 space-y-1">
+              <ul className="list-disc pl-5 mt-1 space-y-1 text-[rgb(var(--text-secondary))]">
                 <li>Generate summaries</li>
                 <li>Extract relevant tags</li>
                 <li>Analyze sentiment</li>

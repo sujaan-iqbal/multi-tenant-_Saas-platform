@@ -1,58 +1,250 @@
 @import "tailwindcss";
 
-/* =========================
-   LIGHT THEME (Default)
-========================= */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  /* Base Layers */
-  --bg: 248 250 252;            /* slate-50 */
-  --surface: 241 245 249;       /* slate-100 */
-  --card: 255 255 255;
-
-  /* Text */
-  --text-primary: 15 23 42;     /* slate-900 */
-  --text-secondary: 71 85 105;  /* slate-600 */
-  --text-muted: 148 163 184;    /* slate-400 */
-
-  /* Borders */
-  --border: 226 232 240;        /* slate-200 */
-
-  /* Brand */
-  --primary: 79 70 229;         /* indigo-600 */
-  --primary-hover: 67 56 202;   /* indigo-700 */
-
-  /* Semantic States */
-  --success: 16 185 129;        /* emerald-500 */
-  --warning: 245 158 11;        /* amber-500 */
-  --danger: 239 68 68;          /* red-500 */
+  /* Light mode - with blue background */
+  --background: #99c8f7;  /* Light blue background */
+  --foreground: #111827;  /* dark gray text for contrast */
+  --card: 255 255 255;  /* white cards on blue background */
+  --border: 203 213 225;  /* slate-300 - softer border */
+  --primary: 37 99 235;  /* blue-600 */
+  --primary-hover: 29 78 216;  /* blue-700 */
+  --surface: 241 245 249;  /* slate-100 - light surface */
+  --text-primary: 17 24 39;  /* gray-900 - dark, highly visible */
+  --text-secondary: 173 216 230;  /* gray-700 - darker for better contrast */
+  --text-tertiary: 75 85 99;  /* gray-600 - readable muted text */
+  --danger: 220 38 38;  /* red-600 */
+  --success: 22 163 74;  /* green-600 */
+  --warning: 202 138 4;  /* yellow-600 */
+  --info: 2 132 199;  /* sky-600 */
 }
 
-/* =========================
-   DARK THEME
-========================= */
 .dark {
-  --bg: 15 23 42;               /* slate-900 */
-  --surface: 30 41 59;          /* slate-800 */
-  --card: 30 41 59;
-
-  --text-primary: 248 250 252;  /* slate-50 */
-  --text-secondary: 203 213 225;/* slate-300 */
-  --text-muted: 100 116 139;    /* slate-500 */
-
-  --border: 51 65 85;           /* slate-700 */
-
-  --primary: 99 102 241;        /* indigo-500 */
-  --primary-hover: 129 140 248; /* indigo-400 */
-
-  --success: 52 211 153;
-  --warning: 251 191 36;
-  --danger: 248 113 113;
+  /* Dark mode - keep as is */
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --card: 31 41 55;  /* gray-800 */
+  --border: 55 65 81;  /* gray-700 */
+  --primary: 59 130 246;  /* blue-500 */
+  --primary-hover: 96 165 250;  /* blue-400 */
+  --surface: 17 24 39;  /* gray-900 */
+  --text-primary: 243 244 246;  /* gray-100 */
+  --text-secondary: 209 213 219;  /* gray-300 */
+  --text-tertiary: 156 163 175;  /* gray-400 */
+  --danger: 239 68 68;  /* red-500 */
+  --success: 34 197 94;  /* green-500 */
+  --warning: 234 179 8;  /* yellow-500 */
+  --info: 14 165 233;  /* sky-500 */
 }
 
-/* =========================
-   Base Styles
-========================= */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
 body {
-  background-color: rgb(var(--bg));
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 16px;
+}
+
+/* Dark mode styles */
+.dark body {
+  background-color: #111827;
+  color: #f3f4f6;
+}
+
+/* Utility classes for your custom variables */
+.bg-card {
+  background-color: rgb(var(--card));
+}
+
+.bg-surface {
+  background-color: rgb(var(--surface));
+}
+
+.bg-primary {
+  background-color: rgb(var(--primary));
+}
+
+.bg-primary-hover {
+  background-color: rgb(var(--primary-hover));
+}
+
+.bg-danger {
+  background-color: rgb(var(--danger));
+}
+
+.bg-success {
+  background-color: rgb(var(--success));
+}
+
+.bg-warning {
+  background-color: rgb(var(--warning));
+}
+
+.bg-info {
+  background-color: rgb(var(--info));
+}
+
+.text-primary {
   color: rgb(var(--text-primary));
+}
+
+.text-secondary {
+  color: rgb(var(--text-secondary));
+}
+
+.text-tertiary {
+  color: rgb(var(--text-tertiary));
+}
+
+.text-danger {
+  color: rgb(var(--danger));
+}
+
+.text-success {
+  color: rgb(var(--success));
+}
+
+.text-warning {
+  color: rgb(var(--warning));
+}
+
+.text-info {
+  color: rgb(var(--info));
+}
+
+.border-default {
+  border-color: rgb(var(--border));
+}
+
+/* Dark mode specific overrides */
+.dark .bg-white {
+  background-color: #1f2937;
+}
+
+.dark .bg-gray-50 {
+  background-color: #1f2937;
+}
+
+.dark .bg-gray-100 {
+  background-color: #2d3748;
+}
+
+.dark .text-gray-900 {
+  color: #f9fafb;
+}
+
+.dark .text-gray-700 {
+  color: #e5e7eb;
+}
+
+.dark .text-gray-500 {
+  color: #9ca3af;
+}
+
+.dark .border-gray-200 {
+  border-color: #374151;
+}
+
+.dark .hover\:bg-gray-50:hover {
+  background-color: #374151;
+}
+
+/* Animation utilities */
+@layer utilities {
+  .transition-theme {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+  }
+  
+  .hover-lift {
+    transition: transform 0.2s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Custom scrollbar for sidebar */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: rgb(var(--surface));
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: rgb(var(--text-tertiary));
+  border-radius: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--text-secondary));
+}
+
+/* Toggle switch animation */
+.toggle-switch {
+  transition: background-color 0.2s ease;
+}
+
+.toggle-switch span {
+  transition: transform 0.2s ease;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid rgb(var(--primary));
+  outline-offset: 2px;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Responsive design helpers */
+@media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none;
+  }
+  
+  .full-width-on-mobile {
+    width: 100%;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
 }

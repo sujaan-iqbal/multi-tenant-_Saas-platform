@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
       <body>
         <ThemeProvider>
           <AuthProvider>
-            <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-900 transition-colors">
+            <div className="flex h-screen overflow-hidden bg-gray-50 ">
               <Sidebar />
               <main className="flex-1 overflow-y-auto p-6 dark:text-gray-100">
                 {children}

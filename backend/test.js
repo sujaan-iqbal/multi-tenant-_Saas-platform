@@ -224,82 +224,82 @@
 
 // CHECKING BATCH AI ANALYSIS
 // test-batch-ai.js
-require('dotenv').config();
-const axios = require('axios');
+// require('dotenv').config();
+// const axios = require('axios');
 
-async function testBatchAI() {
-    console.log('🧪 Testing Batch AI Features...\n');
+// async function testBatchAI() {
+//     console.log('🧪 Testing Batch AI Features...\n');
     
-    try {
-        // 1. Register
-        const registerRes = await axios.post('http://localhost:3000/api/auth/register', {
-            companyName: 'Batch AI Test',
-            email: `batch${Date.now()}@test.com`,
-            password: 'Batch123!'
-        });
+//     try {
+//         // 1. Register
+//         const registerRes = await axios.post('http://localhost:3000/api/auth/register', {
+//             companyName: 'Batch AI Test',
+//             email: `batch${Date.now()}@test.com`,
+//             password: 'Batch123!'
+//         });
         
-        const token = registerRes.data.token;
-        console.log('✅ Registered');
+//         const token = registerRes.data.token;
+//         console.log('✅ Registered');
         
-        // 2. Create multiple documents
-        const documents = [
-            {
-                title: 'Sales Report Q1',
-                content: 'Sales were excellent this quarter. We exceeded targets by 15%.'
-            },
-            {
-                title: 'Marketing Strategy',
-                content: 'Our new campaign focuses on social media. Budget increased by 20%.'
-            },
-            {
-                title: 'Product Feedback',
-                content: 'Users reported bugs in the mobile app. Fix scheduled for next week.'
-            }
-        ];
+//         // 2. Create multiple documents
+//         const documents = [
+//             {
+//                 title: 'Sales Report Q1',
+//                 content: 'Sales were excellent this quarter. We exceeded targets by 15%.'
+//             },
+//             {
+//                 title: 'Marketing Strategy',
+//                 content: 'Our new campaign focuses on social media. Budget increased by 20%.'
+//             },
+//             {
+//                 title: 'Product Feedback',
+//                 content: 'Users reported bugs in the mobile app. Fix scheduled for next week.'
+//             }
+//         ];
         
-        const createdDocs = [];
-        for (const doc of documents) {
-            const createRes = await axios.post('http://localhost:3000/api/documents', doc, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            createdDocs.push(createRes.data.document);
-        }
+//         const createdDocs = [];
+//         for (const doc of documents) {
+//             const createRes = await axios.post('http://localhost:3000/api/documents', doc, {
+//                 headers: { Authorization: `Bearer ${token}` }
+//             });
+//             createdDocs.push(createRes.data.document);
+//         }
         
-        console.log(`✅ Created ${createdDocs.length} documents`);
+//         console.log(`✅ Created ${createdDocs.length} documents`);
         
-        // Wait for auto-analysis
-        await new Promise(resolve => setTimeout(resolve, 2000));
+//         // Wait for auto-analysis
+//         await new Promise(resolve => setTimeout(resolve, 2000));
         
-        // 3. Test batch analyze
-        const docIds = createdDocs.map(doc => doc._id);
-        const batchRes = await axios.post('http://localhost:3000/api/documents/batch/analyze', {
-            documentIds: docIds
-        }, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+//         // 3. Test batch analyze
+//         const docIds = createdDocs.map(doc => doc._id);
+//         const batchRes = await axios.post('http://localhost:3000/api/documents/batch/analyze', {
+//             documentIds: docIds
+//         }, {
+//             headers: { Authorization: `Bearer ${token}` }
+//         });
         
-        console.log('\n🎯 BATCH ANALYSIS RESULTS:');
-        console.log(`Analyzed: ${batchRes.data.analyzedCount} documents`);
-        batchRes.data.results.forEach((result, i) => {
-            console.log(`\n${i + 1}. ${result.title}`);
-            console.log(`   Tags: ${result.tags.join(', ')}`);
-            console.log(`   Sentiment: ${result.sentiment}`);
-        });
+//         console.log('\n🎯 BATCH ANALYSIS RESULTS:');
+//         console.log(`Analyzed: ${batchRes.data.analyzedCount} documents`);
+//         batchRes.data.results.forEach((result, i) => {
+//             console.log(`\n${i + 1}. ${result.title}`);
+//             console.log(`   Tags: ${result.tags.join(', ')}`);
+//             console.log(`   Sentiment: ${result.sentiment}`);
+//         });
         
-        // 4. Test cache stats
-        const cacheRes = await axios.get('http://localhost:3000/api/documents/ai/cache/stats', {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+//         // 4. Test cache stats
+//         const cacheRes = await axios.get('http://localhost:3000/api/documents/ai/cache/stats', {
+//             headers: { Authorization: `Bearer ${token}` }
+//         });
         
-        console.log('\n📊 CACHE STATS:');
-        console.log('Total cached items:', cacheRes.data.size);
-        console.log('By method:', cacheRes.data.methods);
+//         console.log('\n📊 CACHE STATS:');
+//         console.log('Total cached items:', cacheRes.data.size);
+//         console.log('By method:', cacheRes.data.methods);
         
-        console.log('\n🎉 Batch AI features working!');
+//         console.log('\n🎉 Batch AI features working!');
         
-    } catch (error) {
-        console.error('❌ Test failed:', error.response?.data || error.message);
-    }
-}
+//     } catch (error) {
+//         console.error('❌ Test failed:', error.response?.data || error.message);
+//     }
+// }
 
-testBatchAI();
+// testBatchAI();
