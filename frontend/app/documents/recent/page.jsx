@@ -1,12 +1,14 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
 import { useAuth } from '@/contexts/AuthContexts';
 
-export default function RecentDocumentsPage() {
+// Component that uses useSearchParams (must be wrapped in Suspense)
+function RecentContent() {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
@@ -73,5 +75,18 @@ export default function RecentDocumentsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+// Main page component with Suspense boundary
+export default function RecentDocumentsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    }>
+      <RecentContent />
+    </Suspense>
   );
 }
