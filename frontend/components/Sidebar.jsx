@@ -18,7 +18,6 @@ import HelpIcon from '@mui/icons-material/Help';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
-import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 
 // Static navigation data
@@ -43,25 +42,22 @@ export default function Sidebar() {
   const [loading, setLoading] = useState(true);
   const [recentDays, setRecentDays] = useState(7);
   
-  
   const { user, logout, token } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
-  
-  
 
   useEffect(() => {
     if (user && token) {
       fetchDocuments();
     }
   }, [user, token]);
+
   const fetchDocuments = async () => {
     try {
       setLoading(true);
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/documents`);
       const docs = response.data.documents || [];
       
-      // Separate folders and documents
       const folderList = docs.filter(doc => doc.isFolder);
       const docList = docs.filter(doc => !doc.isFolder && !doc.parentId);
       
@@ -75,13 +71,11 @@ export default function Sidebar() {
     }
   };
 
-
   // Hide sidebar on auth pages
   if (pathname === '/login' || pathname === '/register') {
     return null;
   }
 
-  
   const handleLogout = () => {
     logout();
     router.push('/login');
@@ -91,7 +85,6 @@ export default function Sidebar() {
     router.push('/documents?new=true');
   };
 
-  // Filter documents based on search
   const filteredDocs = unfiledDocs.filter(doc => {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
@@ -101,14 +94,9 @@ export default function Sidebar() {
     );
   });
 
-  // Get user initials for avatar
   const getUserInitials = () => {
     if (!user?.email) return 'U';
     return user.email.charAt(0).toUpperCase();
-  };
-
-  const IconComponent = ({ icon: Icon, className = "w-5 h-5" }) => {
-    return <Icon className={className} />;
   };
 
   return (
@@ -195,71 +183,69 @@ export default function Sidebar() {
           
           {/* Main Navigation */}
           <div className="space-y-1 mb-6">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                // Handle recent path specially
-                if (item.id === 'recent') {
-                  return (
-                    <div key={item.id} className="space-y-2">
-                      <Link
-                        href={`/documents/recent?days=${recentDays}`}
-                        className={`
-                          flex items-center px-3 py-2 text-sm rounded-md transition-colors
-                          ${pathname === '/documents/recent' 
-                            ? 'bg-[rgb(var(--primary)_/_0.1)] text-[rgb(var(--primary))]' 
-                            : 'text-[rgb(var(--text-secondary))] hover:bg-[rgb(var(--surface))]'
-                          }
-                        `}
-                      >
-                        <Icon className="w-4 h-4 mr-3" />
-                        <span className="flex-1">{item.title}</span>
-                      </Link>
-                      
-                      {/* Days slider - only show on recent page */}
-                      {pathname === '/documents/recent' && (
-                        <div className="px-3 py-2">
-                          <div className="flex justify-between text-xs text-[rgb(var(--text-tertiary))] mb-1">
-                            <span>1d</span>
-                            <span>3d</span>
-                            <span>7d</span>
-                            <span>14d</span>
-                            <span>30d</span>
-                          </div>
-                          <input
-                            type="range"
-                            min="1"
-                            max="30"
-                            value={recentDays}
-                            onChange={(e) => setRecentDays(e.target.value)}
-                            className="w-full accent-[rgb(var(--primary))]"
-                          />
-                          <p className="text-xs text-[rgb(var(--text-tertiary))] mt-1">
-                            Last {recentDays} days
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                }
-                
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              if (item.id === 'recent') {
                 return (
-                  <Link
-                    key={item.id}
-                    href={item.path}
-                    className={`
-                      flex items-center px-3 py-2 text-sm rounded-md transition-colors
-                      ${pathname === item.path 
-                        ? 'bg-[rgb(var(--primary)_/_0.1)] text-[rgb(var(--primary))]' 
-                        : 'text-[rgb(var(--text-secondary))] hover:bg-[rgb(var(--surface))]'
-                      }
-                    `}
-                  >
-                    <Icon className="w-4 h-4 mr-3" />
-                    <span className="flex-1">{item.title}</span>
-                  </Link>
+                  <div key={item.id} className="space-y-2">
+                    <Link
+                      href={`/documents/recent?days=${recentDays}`}
+                      className={`
+                        flex items-center px-3 py-2 text-sm rounded-md transition-colors
+                        ${pathname === '/documents/recent' 
+                          ? 'bg-[rgb(var(--primary)_/_0.1)] text-[rgb(var(--primary))]' 
+                          : 'text-[rgb(var(--text-secondary))] hover:bg-[rgb(var(--surface))]'
+                        }
+                      `}
+                    >
+                      <Icon className="w-4 h-4 mr-3" />
+                      <span className="flex-1">{item.title}</span>
+                    </Link>
+                    
+                    {pathname === '/documents/recent' && (
+                      <div className="px-3 py-2">
+                        <div className="flex justify-between text-xs text-[rgb(var(--text-tertiary))] mb-1">
+                          <span>1d</span>
+                          <span>3d</span>
+                          <span>7d</span>
+                          <span>14d</span>
+                          <span>30d</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="1"
+                          max="30"
+                          value={recentDays}
+                          onChange={(e) => setRecentDays(e.target.value)}
+                          className="w-full accent-[rgb(var(--primary))]"
+                        />
+                        <p className="text-xs text-[rgb(var(--text-tertiary))] mt-1">
+                          Last {recentDays} days
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 );
-              })}
-            </div>
+              }
+              
+              return (
+                <Link
+                  key={item.id}
+                  href={item.path}
+                  className={`
+                    flex items-center px-3 py-2 text-sm rounded-md transition-colors
+                    ${pathname === item.path 
+                      ? 'bg-[rgb(var(--primary)_/_0.1)] text-[rgb(var(--primary))]' 
+                      : 'text-[rgb(var(--text-secondary))] hover:bg-[rgb(var(--surface))]'
+                    }
+                  `}
+                >
+                  <Icon className="w-4 h-4 mr-3" />
+                  <span className="flex-1">{item.title}</span>
+                </Link>
+              );
+            })}
+          </div>
 
           {/* Folders Section */}
           {folders.length > 0 && (
@@ -371,10 +357,10 @@ export default function Sidebar() {
               );
             })}
             
-            {/* Logout Button */}
+            {/* Logout Button - Now using theme variables */}
             <button
               onClick={handleLogout}
-              className="w-full flex items-center px-3 py-2 text-sm text-red-600 rounded-md hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
+              className="w-full flex items-center px-3 py-2 text-sm rounded-md transition-colors text-[rgb(var(--danger))] hover:bg-[rgb(var(--danger)_/_0.1)]"
             >
               <LogoutIcon className="w-4 h-4 mr-3" />
               <span>Logout</span>

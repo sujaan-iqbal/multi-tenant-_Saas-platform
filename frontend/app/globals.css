@@ -6,7 +6,7 @@
 
 :root {
   /* Light mode - with blue background */
-  --background: #99c8f7;  /* Light blue background */
+  --background: #86c2ff;  /* Light blue background */
   --foreground: #111827;  /* dark gray text for contrast */
   --card: 255 255 255;  /* white cards on blue background */
   --border: 203 213 225;  /* slate-300 - softer border */
@@ -14,7 +14,7 @@
   --primary-hover: 29 78 216;  /* blue-700 */
   --surface: 241 245 249;  /* slate-100 - light surface */
   --text-primary: 17 24 39;  /* gray-900 - dark, highly visible */
-  --text-secondary: 173 216 230;  /* gray-700 - darker for better contrast */
+  --text-secondary: 54 67 71;  /* gray-700 - darker for better contrast */
   --text-tertiary: 75 85 99;  /* gray-600 - readable muted text */
   --danger: 220 38 38;  /* red-600 */
   --success: 22 163 74;  /* green-600 */
@@ -38,6 +38,16 @@
   --success: 34 197 94;  /* green-500 */
   --warning: 234 179 8;  /* yellow-500 */
   --info: 14 165 233;  /* sky-500 */
+}
+
+/* Make sure text-secondary class uses your variable */
+.text-secondary {
+  color: rgb(var(--text-secondary));
+}
+
+/* Also add this to force it */
+.text-\[rgb\(var\(--text-secondary\)\)\] {
+  color: rgb(var(--text-secondary));
 }
 
 @theme inline {
@@ -104,6 +114,7 @@ body {
   color: rgb(var(--text-primary));
 }
 
+/* Make sure text-secondary class uses your variable */
 .text-secondary {
   color: rgb(var(--text-secondary));
 }
