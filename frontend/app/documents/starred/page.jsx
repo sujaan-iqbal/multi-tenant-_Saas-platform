@@ -1,31 +1,31 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
 import { useAuth } from '@/contexts/AuthContexts';
 
-export default function RecentDocumentsPage() {
+// Component that uses useSearchParams
+function StarredContent() {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const searchParams = useSearchParams();
-  const days = searchParams.get('days') || 7;
   const { token } = useAuth();
 
   useEffect(() => {
-    fetchRecent();
-  }, [days, token]);
+    fetchStarred();
+  }, [token]);
 
-  const fetchRecent = async () => {
+  const fetchStarred = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/documents/recent?days=${days}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/documents/starred/all`
       );
       setDocuments(response.data.documents);
     } catch (error) {
-      console.error('Failed to fetch recent:', error);
+      console.error('Failed to fetch starred:', error);
     } finally {
       setLoading(false);
     }
@@ -42,12 +42,12 @@ export default function RecentDocumentsPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-        Recent Documents (Last {days} days)
+        Starred Documents
       </h1>
 
       {documents.length === 0 ? (
         <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg">
-          <p className="text-gray-500">No documents found in the last {days} days</p>
+          <p className="text-gray-500">No starred documents yet</p>
         </div>
       ) : (
         <div className="grid gap-4">
@@ -66,12 +66,25 @@ export default function RecentDocumentsPage() {
                     Updated: {new Date(doc.updatedAt).toLocaleDateString()}
                   </p>
                 </div>
-                {doc.isStarred && <span className="text-yellow-500">⭐</span>}
+                <span className="text-yellow-500">⭐</span>
               </div>
             </Link>
           ))}
         </div>
       )}
     </div>
+  );
+}
+
+// Main page with Suspense boundary
+export default function StarredDocumentsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    }>
+      <StarredContent />
+    </Suspense>
   );
 }
